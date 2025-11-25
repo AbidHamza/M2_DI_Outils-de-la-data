@@ -20,31 +20,52 @@ Ce cours vise à :
 
 ```
 .
-├── slides/              # Présentations du cours
-│   ├── index.html       # Présentation principale (Reveal.js)
-│   └── assets/          # Images, schémas, diagrammes
-├── exercices/           # Exercices pratiques
-│   ├── exercice-01/     # Premier exercice
-│   ├── exercice-02/     # Deuxième exercice
-│   └── ...
-├── ressources/          # Documentation et ressources
-└── README.md            # Ce fichier
+├── slides/                          # Présentations du cours
+│   ├── index.html                   # Version HTML pour projection (Reveal.js)
+│   ├── cours-outils-data.md         # Version Markdown originale
+│   ├── cours-outils-data-format-word.md  # Version optimisée pour Word/PDF
+│   └── INSTRUCTIONS_CONVERSION.md   # Guide de conversion Word/PDF
+├── exercices/                       # Exercices pratiques (autonomes)
+│   ├── exercice-01/                 # Pandas (1h) - données générées
+│   ├── exercice-02/                 # SQL (1h) - base de données générée
+│   ├── exercice-03/                 # Pipeline ETL (2h)
+│   ├── exercice-04/                 # Apache Spark (2h) - données générées
+│   ├── exercice-05/                 # Grafana (8h) - métriques générées
+│   ├── exercice-06/                 # Apache Airflow (10h)
+│   ├── exercice-07/                 # dbt (11h)
+│   ├── atelier-01/                  # Dashboard analytique (14-16h)
+│   ├── atelier-02/                  # Machine Learning Pipeline (15-17h)
+│   └── atelier-03/                  # Stack moderne complète (15h)
+├── ressources/                      # Documentation et ressources
+└── README.md                        # Ce fichier
 ```
+
+**Total estimé : 40-42 heures de travail**
 
 ## 🚀 Démarrage rapide
 
 ### Visualiser les slides
 
+**Option 1 : Version HTML (pour projection)**
 1. Ouvrir `slides/index.html` dans un navigateur web
 2. Utiliser les flèches pour naviguer entre les slides
 3. Appuyer sur `F` pour le mode plein écran
+4. Appuyer sur `S` pour le mode présentateur
+
+**Option 2 : Version Word/PDF**
+1. Consulter `slides/INSTRUCTIONS_CONVERSION.md` pour les instructions
+2. Convertir `slides/cours-outils-data-format-word.md` en Word ou PDF
+3. Utiliser Pandoc, LibreOffice ou Word pour la conversion
 
 ### Exécuter les exercices
 
-Chaque exercice contient :
-- Un fichier `README.md` avec les instructions
-- Le code source nécessaire
-- Les données d'exemple (si nécessaire)
+Chaque exercice est **autonome** et contient :
+- Un fichier `README.md` avec les instructions détaillées
+- Un script `generer_donnees.py` pour créer les données nécessaires (si applicable)
+- Toutes les instructions pour installer et utiliser les outils requis
+- Des exemples de code et de solutions
+
+**Important** : Tous les exercices sont conçus pour être complétés de manière autonome. Les données sont générées automatiquement via les scripts fournis.
 
 ## 🛠️ Technologies utilisées
 
