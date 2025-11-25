@@ -71,3 +71,8 @@ logs/
 # Solutions des étudiants (optionnel)
 # exercices/*/solutions/
 
+# Les corrections sont maintenant chiffrées et peuvent être poussées sur GitHub
+# Le contenu est chiffré et nécessite le mot de passe pour être déchiffré
+# exercices/*/correction/
+# exercices/atelier-*/correction/
+

@@ -2,23 +2,23 @@
 
 ## Accès aux corrections
 
-Les corrections de tous les exercices sont disponibles dans chaque dossier d'exercice sous le nom `correction.py`.
+Les corrections de tous les exercices sont disponibles dans chaque dossier d'exercice sous le dossier `correction/`.
 
-**Mot de passe pour accéder aux corrections : `Abidexercice123`**
+**Les corrections sont protégées par mot de passe. Contactez le formateur pour obtenir le mot de passe.**
 
 ## Comment utiliser les corrections
 
-1. Allez dans le dossier de l'exercice :
+1. Allez dans le dossier de correction de l'exercice :
    ```bash
-   cd exercice-XX
+   cd exercice-XX/correction
    ```
 
 2. Exécutez le fichier de correction :
    ```bash
-   python correction.py
+   python solution.py
    ```
 
-3. Entrez le mot de passe lorsque demandé : `Abidexercice123`
+3. Entrez le mot de passe lorsque demandé (contactez le formateur si vous ne l'avez pas)
 
 4. La correction complète s'affichera avec :
    - Les solutions détaillées
@@ -36,13 +36,16 @@ Les corrections de tous les exercices sont disponibles dans chaque dossier d'exe
 ## Disponibilité
 
 Les corrections sont disponibles pour :
--  Exercice 01 : Manipulation Pandas
--  Exercice 02 : Analyse SQL
-- ⏳ Exercice 03 : Pipeline ETL (à venir)
-- ⏳ Exercice 04 : Apache Spark (à venir)
-- ⏳ Exercice 05 : Grafana (à venir)
-- ⏳ Exercice 06 : Apache Airflow (à venir)
-- ⏳ Exercice 07 : dbt (à venir)
+- Exercice 01 : Apache Superset
+- Exercice 02 : Metabase
+- Exercice 03 : ELK Stack
+- Exercice 04 : Apache Spark
+- Exercice 05 : Grafana + Prometheus
+- Exercice 06 : Apache Airflow
+- Exercice 07 : dbt
+- Atelier 01 : Dashboard analytique
+- Atelier 02 : Pipeline Machine Learning
+- Atelier 03 : Stack moderne de données
 
 ---
 
