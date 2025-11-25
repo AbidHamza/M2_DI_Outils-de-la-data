@@ -2,24 +2,23 @@
 
 ## 🎯 Objectifs
 
-- Comprendre l'orchestration de workflows de données
-- Installer et configurer Apache Airflow
+- Installer Apache Airflow
 - Créer des DAGs (Directed Acyclic Graphs)
-- Gérer les dépendances entre tâches
-- Monitorer l'exécution des pipelines
+- Orchestrer des pipelines de données
+- Monitorer l'exécution des tâches
+- Maîtriser l'orchestration de workflows
 
 ## 📋 Prérequis
 
 - Python 3.8+
 - Docker (recommandé) ou installation native
-- Connaissances de base en Python
 
 ## 📦 Installation
 
-### Option 1 : Avec Docker (Recommandé)
+### Option 1 : Avec Docker Compose (Recommandé)
 
 ```bash
-# Télécharger docker-compose.yml depuis Airflow
+# Télécharger docker-compose.yml
 curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.7.0/docker-compose.yaml'
 
 # Initialiser la base de données
@@ -37,9 +36,7 @@ docker-compose up -d
 ```bash
 # Créer un environnement virtuel
 python -m venv airflow-env
-source airflow-env/bin/activate  # Linux/Mac
-# ou
-airflow-env\Scripts\activate  # Windows
+source airflow-env/bin/activate
 
 # Installer Airflow
 pip install apache-airflow
@@ -62,118 +59,78 @@ airflow webserver --port 8080
 airflow scheduler
 ```
 
-## 📊 Contexte
-
-Vous devez créer un pipeline ETL complet qui :
-1. Extrait des données depuis plusieurs sources
-2. Transforme et nettoie les données
-3. Charge les données dans une destination finale
-4. Envoie un rapport par email
-
 ## 🎓 Instructions
 
-### Étape 1 : Configuration initiale (1h)
+### Étape 1 : Configuration initiale
 
-1. **Installer Airflow** (voir section Installation)
-2. **Accéder à l'interface web** : http://localhost:8080
-3. **Explorer l'interface** :
+1. **Accédez à Airflow** : http://localhost:8080
+2. **Explorez l'interface** :
    - DAGs : Liste des workflows
-   - Graph View : Vue graphique des dépendances
-   - Task Instances : Historique d'exécution
+   - Graph View : Vue graphique
+   - Task Instances : Historique
    - Admin : Configuration
 
-### Étape 2 : Premier DAG simple (2h)
+### Étape 2 : Premier DAG simple
 
 Créez un DAG qui :
 
-1. **Tâche 1** : Génère un fichier CSV avec des données aléatoires
+1. **Tâche 1** : Génère un fichier CSV avec des données
 2. **Tâche 2** : Lit le CSV et calcule des statistiques
-3. **Tâche 3** : Sauvegarde les statistiques dans un fichier JSON
-4. **Tâche 4** : Envoie un email avec les résultats (simulé avec un log)
+3. **Tâche 3** : Sauvegarde les statistiques en JSON
+4. **Tâche 4** : Envoie un log de confirmation
 
-**Structure du DAG** :
-```python
-# Tâche 1 → Tâche 2 → Tâche 3
-#              ↓
-#          Tâche 4
-```
+**Structure** : Tâche 1 → Tâche 2 → Tâche 3 → Tâche 4
 
-### Étape 3 : DAG avec dépendances complexes (3h)
+### Étape 3 : DAG avec dépendances complexes
 
-Créez un DAG plus complexe qui :
+Créez un DAG qui :
 
-1. **Extraction** :
-   - Tâche 1 : Télécharger des données depuis une API (simulée)
-   - Tâche 2 : Lire un fichier CSV local
-   - Tâche 3 : Lire des données depuis une base SQLite
+1. **Extraction** (en parallèle) :
+   - Tâche 1 : Télécharger depuis API
+   - Tâche 2 : Lire fichier CSV
+   - Tâche 3 : Extraire de base de données
 
 2. **Transformation** (en parallèle après extraction) :
-   - Tâche 4 : Nettoyer les données de l'API
-   - Tâche 5 : Nettoyer les données CSV
-   - Tâche 6 : Nettoyer les données SQLite
+   - Tâche 4 : Nettoyer données API
+   - Tâche 5 : Nettoyer données CSV
+   - Tâche 6 : Nettoyer données DB
 
 3. **Agrégation** :
-   - Tâche 7 : Fusionner toutes les données nettoyées
-   - Tâche 8 : Calculer des métriques agrégées
+   - Tâche 7 : Fusionner toutes les données
+   - Tâche 8 : Calculer métriques
 
 4. **Chargement** :
-   - Tâche 9 : Sauvegarder dans un Data Warehouse (simulé)
-   - Tâche 10 : Générer un rapport
+   - Tâche 9 : Sauvegarder dans warehouse
+   - Tâche 10 : Générer rapport
 
-**Structure du DAG** :
-```
-Tâche 1 ─┐
-Tâche 2 ─┼─→ Tâche 4 ─┐
-Tâche 3 ─┘    Tâche 5 ─┼─→ Tâche 7 → Tâche 8 → Tâche 9 → Tâche 10
-         └─→ Tâche 6 ─┘
-```
+### Étape 4 : Gestion d'erreurs
 
-### Étape 4 : Gestion des erreurs et retry (1h)
+1. **Configurez les retries** :
+   - Retries automatiques
+   - Délais entre retries
 
-1. **Configurer les retries** :
-   - Ajouter des retries automatiques en cas d'échec
-   - Configurer les délais entre retries
+2. **Callbacks** :
+   - on_failure_callback
+   - on_success_callback
 
-2. **Gestion d'erreurs** :
-   - Implémenter des callbacks on_failure
-   - Envoyer des alertes en cas d'échec
-
-3. **Tests** :
-   - Tester le comportement en cas d'échec
-   - Vérifier les retries
-
-### Étape 5 : Variables et connexions (1h)
+### Étape 5 : Variables et connexions
 
 1. **Variables Airflow** :
-   - Créer des variables pour stocker des configurations
-   - Utiliser les variables dans vos DAGs
+   - Créez des variables
+   - Utilisez-les dans vos DAGs
 
 2. **Connexions** :
-   - Configurer une connexion à une base de données
-   - Utiliser la connexion dans vos tâches
+   - Configurez une connexion DB
+   - Utilisez-la dans vos tâches
 
-### Étape 6 : Scheduling et triggers (1h)
+### Étape 6 : Scheduling
 
-1. **Scheduling** :
-   - Configurer l'exécution quotidienne
-   - Configurer l'exécution hebdomadaire
-   - Utiliser des expressions cron
+1. **Configurez le scheduling** :
+   - Quotidien
+   - Hebdomadaire
+   - Expression cron
 
-2. **Triggers manuels** :
-   - Tester le déclenchement manuel
-   - Utiliser les paramètres de configuration
-
-### Étape 7 : Documentation et monitoring (1h)
-
-1. **Documentation** :
-   - Ajouter des docstrings aux DAGs
-   - Documenter chaque tâche
-   - Créer un fichier `resultats.md`
-
-2. **Monitoring** :
-   - Configurer des alertes
-   - Créer un dashboard de monitoring
-   - Exporter les logs
+2. **Testez le déclenchement**
 
 ## 📁 Structure attendue
 
@@ -184,118 +141,64 @@ exercice-06/
 │   ├── simple_dag.py
 │   ├── complex_dag.py
 │   └── monitoring_dag.py
-├── scripts/
-│   ├── extract_data.py
-│   ├── transform_data.py
-│   └── load_data.py
-├── donnees/
-│   └── (fichiers générés)
 └── solutions/
     └── votre-nom/
         ├── dags/ (vos DAGs)
-        ├── resultats.md
-        └── screenshots/ (captures d'écran)
+        ├── screenshots/
+        └── resultats.md
 ```
 
 ## ✅ Critères d'évaluation
 
 - [ ] Airflow installé et fonctionnel
-- [ ] Au moins 3 DAGs créés (simple, complexe, monitoring)
+- [ ] Au moins 3 DAGs créés
 - [ ] Dépendances correctement configurées
-- [ ] Gestion d'erreurs et retries implémentée
+- [ ] Gestion d'erreurs implémentée
 - [ ] Variables et connexions utilisées
 - [ ] Scheduling configuré
 - [ ] Documentation complète
 
 ## 💡 Conseils
 
-- Placez vos DAGs dans le dossier `dags/` d'Airflow
-- Utilisez des opérateurs Python pour la flexibilité
-- Testez vos DAGs en mode debug avant de les activer
-- Utilisez les XComs pour passer des données entre tâches
-- Documentez vos DAGs avec des docstrings
-
-## 🚀 Fonctionnalités avancées (Bonus)
-
-- Utilisation de Docker Operators
-- Intégration avec des APIs externes
-- Utilisation de Sensors pour attendre des conditions
-- Création de plugins personnalisés
-- Déploiement en production
+- Placez vos DAGs dans le dossier `dags/`
+- Utilisez des IDs de tâches descriptifs
+- Documentez vos DAGs
+- Testez en mode debug
+- Utilisez XComs pour passer des données
 
 ## 📚 Ressources
 
 - Documentation Airflow : https://airflow.apache.org/docs/
 - Tutoriels : https://airflow.apache.org/docs/apache-airflow/stable/tutorial/
-- Exemples de DAGs : https://github.com/apache/airflow/tree/main/airflow/example_dags
+- Exemples : https://github.com/apache/airflow/tree/main/airflow/example_dags
 
 ## 🆘 Aide
 
 Si vous êtes bloqué :
-1. Consultez la documentation officielle
-2. Regardez les DAGs d'exemple fournis avec Airflow
+1. Consultez la documentation
+2. Regardez les DAGs d'exemple
 3. Ouvrez une issue sur le dépôt GitHub
 
 ## 📤 Comment soumettre votre solution
 
 ### Étapes pour pousser votre exercice sur GitHub
 
-1. **Préparez votre environnement** :
+1. **Créez votre dossier de solution** :
    ```bash
    cd exercice-06
-   ```
-   
-   2. **Installez les dépendances** :
-   ```bash
-   # Installez les outils requis selon les instructions du README
-   ```
-
-2. **Créez votre dossier de solution** :
-   ```bash
-   mkdir -p solutions/votre-nom
+   mkdir -p solutions/votre-nom/dags
    cd solutions/votre-nom
    ```
 
-3. **Placez tous vos fichiers** dans ce dossier :
-   - Votre code source
-   - Votre fichier `resultats.md`
-   - Tous les fichiers générés (graphiques, exports, etc.)
+2. **Copiez vos DAGs** dans le dossier `dags/`
+3. **Prenez des captures d'écran** de vos DAGs dans Airflow
+4. **Créez un fichier `resultats.md`**
 
-4. **Ajoutez et commitez vos fichiers** :
+5. **Ajoutez et commitez** :
    ```bash
    git add solutions/votre-nom/
    git commit -m "Solution exercice 06 - Votre Nom"
-   ```
-
-5. **Poussez vers GitHub** :
-   ```bash
    git push origin main
    ```
-   
-   Si vous avez forké le dépôt :
-   ```bash
-   git push origin votre-branche
-   ```
 
-6. **Créez une Pull Request** (si vous avez forké) ou vos fichiers seront directement visibles dans le dépôt principal.
-
-### Structure de votre soumission
-
-Votre dossier `solutions/votre-nom/` doit contenir :
-- ✅ Tous vos fichiers de code source
-- ✅ `resultats.md` : Votre analyse et résultats
-- ✅ Tous les fichiers générés (graphiques, exports, etc.)
-- ✅ Un fichier `README.md` (optionnel) expliquant votre approche
-
-### Vérification
-
-Avant de pousser, vérifiez que :
-- [ ] Votre code fonctionne sans erreur
-- [ ] Tous les fichiers sont présents
-- [ ] La documentation est complète
-- [ ] Les critères d'évaluation sont remplis
-
-**Important** : N'oubliez pas de remplacer "votre-nom" par votre vrai nom dans le chemin du dossier ! dans le README principal du dépôt pour soumettre votre solution.
-
-
-
+**Important** : N'oubliez pas de remplacer "votre-nom" par votre vrai nom !

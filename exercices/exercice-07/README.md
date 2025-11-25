@@ -1,12 +1,12 @@
-# Exercice 07 : dbt (data build tool) - Transformation de données
+# Exercice 07 : dbt (data build tool) - Transformation SQL
 
 ## 🎯 Objectifs
 
-- Comprendre le concept de transformation de données avec SQL
 - Installer et configurer dbt
-- Créer des modèles de données
+- Créer des modèles de transformation SQL
 - Implémenter des tests de qualité
 - Générer de la documentation automatique
+- Maîtriser la transformation de données moderne
 
 ## 📋 Prérequis
 
@@ -16,107 +16,107 @@
 
 ## 📦 Installation
 
-### Installation de dbt
-
 ```bash
-# Installer dbt (choisir selon votre base de données)
+# Installer dbt (choisir selon votre base)
 pip install dbt-postgres  # Pour PostgreSQL
 # ou
-pip install dbt-sqlite    # Pour SQLite (plus simple pour débuter)
+pip install dbt-sqlite    # Pour SQLite
 
 # Vérifier l'installation
 dbt --version
 ```
 
-### Configuration
-
-1. **Créer un profil dbt** dans `~/.dbt/profiles.yml` :
-
-```yaml
-m2_di_project:
-  outputs:
-    dev:
-      type: postgres  # ou sqlite
-      host: localhost
-      user: votre_user
-      password: votre_password
-      port: 5432
-      dbname: m2_di_db
-      schema: public
-  target: dev
-```
-
-2. **Initialiser un projet dbt** :
-```bash
-dbt init m2_di_project
-cd m2_di_project
-```
-
 ## 📊 Données
 
-Utilisez la base de données créée dans l'exercice 02 ou générez de nouvelles données avec le script fourni.
+Utilisez la base de données de l'exercice 02 ou créez-en une nouvelle.
 
 ## 🎓 Instructions
 
-### Étape 1 : Configuration du projet (1h)
+### Étape 1 : Configuration du projet
 
-1. **Initialiser le projet dbt**
-2. **Configurer la connexion** à votre base de données
-3. **Tester la connexion** : `dbt debug`
-4. **Explorer la structure** du projet dbt
+1. **Initialiser un projet dbt** :
+   ```bash
+   dbt init m2_di_project
+   cd m2_di_project
+   ```
 
-### Étape 2 : Modèles de base (2h)
+2. **Configurer `profiles.yml`** dans `~/.dbt/profiles.yml` :
+   ```yaml
+   m2_di_project:
+     outputs:
+       dev:
+         type: postgres  # ou sqlite
+         host: localhost
+         user: votre_user
+         password: votre_password
+         port: 5432
+         dbname: m2_di_db
+         schema: public
+     target: dev
+   ```
 
-Créez des modèles SQL pour :
+3. **Tester la connexion** :
+   ```bash
+   dbt debug
+   ```
 
-1. **staging** (couche de staging) :
-   - `stg_customers.sql` : Nettoyage de la table clients
-   - `stg_orders.sql` : Nettoyage de la table commandes
-   - `stg_products.sql` : Nettoyage de la table produits
+### Étape 2 : Modèles de base
 
-2. **intermediate** (modèles intermédiaires) :
+Créez des modèles dans `models/` :
+
+1. **Staging** (`models/staging/`) :
+   - `stg_customers.sql` : Nettoyage table clients
+   - `stg_orders.sql` : Nettoyage table commandes
+   - `stg_products.sql` : Nettoyage table produits
+
+2. **Intermediate** (`models/intermediate/`) :
    - `int_order_items.sql` : Jointure commandes et produits
    - `int_customer_orders.sql` : Agrégation par client
 
-3. **marts** (couche business) :
+3. **Marts** (`models/marts/`) :
    - `dim_customers.sql` : Dimension clients enrichie
    - `dim_products.sql` : Dimension produits
    - `fct_orders.sql` : Fait des commandes
 
-### Étape 3 : Macros et fonctions réutilisables (2h)
+### Étape 3 : Macros
 
-1. **Créer des macros** :
-   - Macro pour formater les dates
-   - Macro pour calculer les pourcentages
-   - Macro pour les calculs de croissance
+Créez des macros réutilisables dans `macros/` :
 
-2. **Utiliser les macros** dans vos modèles
+1. **Macro pour formater les dates**
+2. **Macro pour calculer les pourcentages**
+3. **Macro pour les calculs de croissance**
 
-### Étape 4 : Tests de qualité (2h)
+### Étape 4 : Tests
 
 1. **Tests de base** :
-   - `not_null` : Vérifier l'absence de valeurs nulles
-   - `unique` : Vérifier l'unicité
-   - `accepted_values` : Vérifier les valeurs acceptées
-   - `relationships` : Vérifier les relations entre tables
+   - `not_null` : Vérifier absence de valeurs nulles
+   - `unique` : Vérifier unicité
+   - `accepted_values` : Vérifier valeurs acceptées
+   - `relationships` : Vérifier relations
 
 2. **Tests personnalisés** :
-   - Créer des tests SQL personnalisés
-   - Tester les règles métier
+   - Créez des tests SQL personnalisés
+   - Testez les règles métier
 
-3. **Exécuter les tests** : `dbt test`
+3. **Exécuter les tests** :
+   ```bash
+   dbt test
+   ```
 
-### Étape 5 : Documentation (1h)
+### Étape 5 : Documentation
 
 1. **Documenter les modèles** :
-   - Ajouter des descriptions aux modèles
-   - Documenter les colonnes
-   - Ajouter des exemples
+   - Ajoutez des descriptions
+   - Documentez les colonnes
+   - Ajoutez des exemples
 
-2. **Générer la documentation** : `dbt docs generate`
-3. **Visualiser la documentation** : `dbt docs serve`
+2. **Générer la documentation** :
+   ```bash
+   dbt docs generate
+   dbt docs serve
+   ```
 
-### Étape 6 : Seeds et sources (1h)
+### Étape 6 : Seeds et sources
 
 1. **Créer des seeds** :
    - Fichiers CSV de référence
@@ -127,15 +127,14 @@ Créez des modèles SQL pour :
    - Documenter les sources
    - Utiliser `source()` dans les modèles
 
-### Étape 7 : Pipeline complet (2h)
+### Étape 7 : Pipeline complet
 
-1. **Créer un pipeline complet** :
-   - Modèles staging → intermediate → marts
-   - Tests à chaque étape
-   - Documentation complète
+1. **Exécuter le pipeline** :
+   ```bash
+   dbt run
+   ```
 
-2. **Exécuter le pipeline** : `dbt run`
-3. **Vérifier les résultats** dans la base de données
+2. **Vérifier les résultats** dans la base de données
 
 ## 📁 Structure attendue
 
@@ -150,39 +149,29 @@ exercice-07/
 │   │   └── marts/
 │   ├── macros/
 │   ├── tests/
-│   ├── seeds/
-│   └── docs/
+│   └── seeds/
 └── solutions/
     └── votre-nom/
         ├── m2_di_project/ (votre projet)
-        ├── resultats.md
-        └── documentation/ (docs générées)
+        └── resultats.md
 ```
 
 ## ✅ Critères d'évaluation
 
-- [ ] Projet dbt configuré et fonctionnel
-- [ ] Au moins 8 modèles créés (staging, intermediate, marts)
-- [ ] Macros réutilisables implémentées
-- [ ] Tests de qualité configurés et passés
-- [ ] Documentation complète générée
-- [ ] Pipeline complet fonctionnel
+- [ ] Projet dbt configuré
+- [ ] Au moins 8 modèles créés
+- [ ] Macros réutilisables
+- [ ] Tests configurés et passés
+- [ ] Documentation complète
+- [ ] Pipeline fonctionnel
 
 ## 💡 Conseils
 
-- Suivez les conventions de nommage dbt
-- Organisez vos modèles en couches logiques
-- Testez régulièrement avec `dbt test`
+- Suivez les conventions dbt
+- Organisez en couches logiques
+- Testez régulièrement
 - Documentez au fur et à mesure
-- Utilisez les Jinja templates pour la flexibilité
-
-## 🚀 Fonctionnalités avancées (Bonus)
-
-- Utilisation de packages dbt
-- Création de snapshots pour l'historisation
-- Utilisation de hooks pour l'orchestration
-- Intégration avec Airflow
-- Déploiement en production
+- Utilisez Jinja templates
 
 ## 📚 Ressources
 
@@ -193,70 +182,30 @@ exercice-07/
 ## 🆘 Aide
 
 Si vous êtes bloqué :
-1. Consultez la documentation officielle dbt
-2. Regardez les exemples de projets dbt
+1. Consultez la documentation
+2. Regardez les exemples
 3. Ouvrez une issue sur le dépôt GitHub
 
 ## 📤 Comment soumettre votre solution
 
 ### Étapes pour pousser votre exercice sur GitHub
 
-1. **Préparez votre environnement** :
+1. **Créez votre dossier de solution** :
    ```bash
    cd exercice-07
-   ```
-   
-   2. **Installez les dépendances** :
-   ```bash
-   # Installez les outils requis selon les instructions du README
-   ```
-
-2. **Créez votre dossier de solution** :
-   ```bash
    mkdir -p solutions/votre-nom
    cd solutions/votre-nom
    ```
 
-3. **Placez tous vos fichiers** dans ce dossier :
-   - Votre code source
-   - Votre fichier `resultats.md`
-   - Tous les fichiers générés (graphiques, exports, etc.)
+2. **Copiez votre projet dbt** complet
+3. **Générez la documentation** et sauvegardez-la
+4. **Créez un fichier `resultats.md`**
 
-4. **Ajoutez et commitez vos fichiers** :
+5. **Ajoutez et commitez** :
    ```bash
    git add solutions/votre-nom/
    git commit -m "Solution exercice 07 - Votre Nom"
-   ```
-
-5. **Poussez vers GitHub** :
-   ```bash
    git push origin main
    ```
-   
-   Si vous avez forké le dépôt :
-   ```bash
-   git push origin votre-branche
-   ```
 
-6. **Créez une Pull Request** (si vous avez forké) ou vos fichiers seront directement visibles dans le dépôt principal.
-
-### Structure de votre soumission
-
-Votre dossier `solutions/votre-nom/` doit contenir :
-- ✅ Tous vos fichiers de code source
-- ✅ `resultats.md` : Votre analyse et résultats
-- ✅ Tous les fichiers générés (graphiques, exports, etc.)
-- ✅ Un fichier `README.md` (optionnel) expliquant votre approche
-
-### Vérification
-
-Avant de pousser, vérifiez que :
-- [ ] Votre code fonctionne sans erreur
-- [ ] Tous les fichiers sont présents
-- [ ] La documentation est complète
-- [ ] Les critères d'évaluation sont remplis
-
-**Important** : N'oubliez pas de remplacer "votre-nom" par votre vrai nom dans le chemin du dossier ! dans le README principal du dépôt pour soumettre votre solution.
-
-
-
+**Important** : N'oubliez pas de remplacer "votre-nom" par votre vrai nom !
